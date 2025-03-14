@@ -1,1 +1,0 @@
-# QA_Tech_Pro
