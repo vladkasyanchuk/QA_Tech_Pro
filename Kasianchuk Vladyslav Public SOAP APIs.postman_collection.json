@@ -1,0 +1,230 @@
+{
+	"info": {
+		"_postman_id": "acb53761-c8ad-4cd8-b502-1fa5c1b3548e",
+		"name": "Kasianchuk Vladyslav Public SOAP APIs",
+		"description": "This is a collection of different SOAP APIs that are completley public and do not require any authentication, making it easier for consumers to play with and understand what APIs are all about by seeing the many different ways in which APIs can be used.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "7519532"
+	},
+	"item": [
+		{
+			"name": "Book ISBN Numbers",
+			"item": [
+				{
+					"name": "Is Valid ISBN13 Number",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"1. Status code 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"2. Content-Type: text/xml\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\", \"text/xml; charset=utf-8\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"3. Header Server exists\", function () {\r",
+									"    pm.response.to.have.header(\"Server\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"4. Response time less than 1000 ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"5. Tag IsValidISBN13Result\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"<m:IsValidISBN13Result>\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"6. Value IsValidISBN13Result == true\", function () {\r",
+									"    var xml = xml2Json(pm.response.text());\r",
+									"    pm.expect(xml[\"soap:Envelope\"][\"soap:Body\"][\"m:IsValidISBN13Response\"][\"m:IsValidISBN13Result\"]).to.eql(\"true\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"7. Starts from SOAP Envelope\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"<soap:Envelope\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"8. SOAP Fault doesn't exist\", function () {\r",
+									"    pm.expect(pm.response.text()).to.not.include(\"soap:Fault\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"9. Result is 'true' or 'false'\", function () {\r",
+									"    let xml = xml2Json(pm.response.text());\r",
+									"    let result = xml[\"soap:Envelope\"][\"soap:Body\"][\"m:IsValidISBN13Response\"][\"m:IsValidISBN13Result\"];\r",
+									"    pm.expect([\"true\", \"false\"]).to.include(result);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"10. XML contains correct namespace\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include('xmlns:m=\"http://webservices.daehosting.com/ISBN\"');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "text/xml; charset=utf-8",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">\n  <soap:Body>\n    <IsValidISBN13 xmlns=\"http://webservices.daehosting.com/ISBN\">\n      <sISBN>978-1-4612-9090-2</sISBN>\n    </IsValidISBN13>\n  </soap:Body>\n</soap:Envelope>"
+						},
+						"url": {
+							"raw": "http://webservices.daehosting.com/services/isbnservice.wso",
+							"protocol": "http",
+							"host": [
+								"webservices",
+								"daehosting",
+								"com"
+							],
+							"path": [
+								"services",
+								"isbnservice.wso"
+							]
+						},
+						"description": "The test is done by calculation on the first 12 digits and compare the result with the checksum number at the end. You have to pass a 13 digits number."
+					},
+					"response": []
+				},
+				{
+					"name": "Is Valid ISBN10 Number",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"1. Content-Encoding is gzip\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Encoding\", \"gzip\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"2. Server is Microsoft-IIS/10.0\", function () {\r",
+									"    pm.response.to.have.header(\"Server\", \"Microsoft-IIS/10.0\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"3. Web-Service is DataFlex 18.2\", function () {\r",
+									"    pm.response.to.have.header(\"Web-Service\", \"DataFlex 18.2\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"4. Referrer-Policy is strict-origin-when-cross-origin\", function () {\r",
+									"    pm.response.to.have.header(\"Referrer-Policy\", \"strict-origin-when-cross-origin\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"5. Permissions-Policy disables interest-cohort\", function () {\r",
+									"    pm.response.to.have.header(\"Permissions-Policy\", \"interest-cohort=()\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"6. HSTS is correctly configured\", function () {\r",
+									"    const hsts = pm.response.headers.get(\"Strict-Transport-Security\");\r",
+									"    pm.expect(hsts).to.include(\"max-age=15768000\");\r",
+									"    pm.expect(hsts).to.include(\"includeSubdomains\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"7. Cache-Control is private, max-age=0\", function () {\r",
+									"    pm.response.to.have.header(\"Cache-Control\", \"private, max-age=0\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"8. Date header contains 2025\", function () {\r",
+									"    const date = pm.response.headers.get(\"Date\");\r",
+									"    pm.expect(date).to.include(\"2025\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"9. Content-Length is 302\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Length\")).to.eql(\"302\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"10. Vary is Accept-Encoding\", function () {\r",
+									"    pm.response.to.have.header(\"Vary\", \"Accept-Encoding\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "text/xml; charset=utf-8",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">\n  <soap:Body>\n    <IsValidISBN10 xmlns=\"http://webservices.daehosting.com/ISBN\">\n      <sISBN>0-19-852663-6</sISBN>\n    </IsValidISBN10>\n  </soap:Body>\n</soap:Envelope>"
+						},
+						"url": {
+							"raw": "http://webservices.daehosting.com/services/isbnservice.wso",
+							"protocol": "http",
+							"host": [
+								"webservices",
+								"daehosting",
+								"com"
+							],
+							"path": [
+								"services",
+								"isbnservice.wso"
+							]
+						},
+						"description": "The test is done by calculation on the first 9 digits and compare the result with the checksum number at the end. You have to pass a 10 digits number or 8 digits and an X."
+					},
+					"response": []
+				}
+			],
+			"description": "SOAP APIs for book ISBN numbers.",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
