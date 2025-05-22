@@ -1,0 +1,347 @@
+{
+	"info": {
+		"_postman_id": "b531ffa0-3cbf-42e9-997c-37666e9e43ff",
+		"name": "Vladyslav Kasianchuk Atlas MongoDB Data API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "7519532"
+	},
+	"item": [
+		{
+			"name": "Create new Document",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Статус-код має бути 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Респонс повинен містити _id\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.property(\"_id\");\r",
+							"});\r",
+							"\r",
+							"pm.collectionVariables.set(\"apartmentId\", pm.response.json()._id);\r",
+							"\r",
+							"pm.test(\"Валідація JSON-схеми відповіді\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"\r",
+							"    var schema = {\r",
+							"        \"type\": \"object\",\r",
+							"        \"required\": [\"_id\", \"name\", \"summary\", \"bedrooms\", \"bathrooms\", \"price\", \"address\", \"amenities\", \"host\", \"createdAt\"],\r",
+							"        \"properties\": {\r",
+							"            \"_id\": { \"type\": \"string\" },\r",
+							"            \"name\": { \"type\": \"string\" },\r",
+							"            \"summary\": { \"type\": \"string\" },\r",
+							"            \"bedrooms\": { \"type\": \"number\" },\r",
+							"            \"bathrooms\": { \"type\": \"number\" },\r",
+							"            \"price\": { \"type\": \"number\" },\r",
+							"            \"address\": {\r",
+							"                \"type\": \"object\",\r",
+							"                \"required\": [\"street\", \"market\"],\r",
+							"                \"properties\": {\r",
+							"                    \"street\": { \"type\": \"string\" },\r",
+							"                    \"market\": { \"type\": \"string\" }\r",
+							"                }\r",
+							"            },\r",
+							"            \"amenities\": {\r",
+							"                \"type\": \"array\",\r",
+							"                \"items\": { \"type\": \"string\" }\r",
+							"            },\r",
+							"            \"host\": {\r",
+							"                \"type\": \"object\",\r",
+							"                \"required\": [\"name\", \"superhost\"],\r",
+							"                \"properties\": {\r",
+							"                    \"name\": { \"type\": \"string\" },\r",
+							"                    \"superhost\": { \"type\": \"boolean\" }\r",
+							"                }\r",
+							"            },\r",
+							"            \"createdAt\": { \"type\": \"string\", \"format\": \"date-time\" }\r",
+							"        }\r",
+							"    };\r",
+							"\r",
+							"    pm.expect(tv4.validate(jsonData, schema)).to.be.true;\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"Test Apartment\",\r\n  \"summary\": \"Простора квартира у центрі Вінниці\",\r\n  \"bedrooms\": 2,\r\n  \"bathrooms\": 1,\r\n  \"price\": 120,\r\n  \"address\": {\r\n    \"street\": \"вул. Галицька, 12\",\r\n    \"market\": \"Vinnytsja\"\r\n  },\r\n  \"amenities\": [\r\n    \"WiFi\",\r\n    \"Кухня\",\r\n    \"Опалення\"\r\n  ],\r\n  \"host\": {\r\n    \"name\": \"Vladyslav\",\r\n    \"superhost\": true\r\n  }\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/listingsAndReviews",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"listingsAndReviews"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get document by id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Статус відповіді — 200 OK\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Content-Type — JSON\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\", \"application/json; charset=utf-8\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Об'єкт має всі ключові поля\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.property(\"_id\");\r",
+							"    pm.expect(jsonData).to.have.property(\"name\");\r",
+							"    pm.expect(jsonData).to.have.property(\"summary\");\r",
+							"    pm.expect(jsonData).to.have.property(\"bedrooms\");\r",
+							"    pm.expect(jsonData).to.have.property(\"bathrooms\");\r",
+							"    pm.expect(jsonData).to.have.property(\"price\");\r",
+							"    pm.expect(jsonData).to.have.property(\"address\");\r",
+							"    pm.expect(jsonData).to.have.property(\"amenities\");\r",
+							"    pm.expect(jsonData).to.have.property(\"host\");\r",
+							"    pm.expect(jsonData).to.have.property(\"createdAt\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Типи даних правильні\", function () {\r",
+							"    const data = pm.response.json();\r",
+							"    pm.expect(data.name).to.be.a(\"string\");\r",
+							"    pm.expect(data.summary).to.be.a(\"string\");\r",
+							"    pm.expect(data.bedrooms).to.be.a(\"number\");\r",
+							"    pm.expect(data.bathrooms).to.be.a(\"number\");\r",
+							"    pm.expect(data.price).to.be.a(\"number\");\r",
+							"    pm.expect(data.address.street).to.be.a(\"string\");\r",
+							"    pm.expect(data.address.market).to.be.a(\"string\");\r",
+							"    pm.expect(data.amenities).to.be.an(\"array\");\r",
+							"    pm.expect(data.host.name).to.be.a(\"string\");\r",
+							"    pm.expect(data.host.superhost).to.be.a(\"boolean\");\r",
+							"    pm.expect(Date.parse(data.createdAt)).to.not.be.NaN;\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/listingsAndReviews/{{apartmentId}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"listingsAndReviews",
+						"{{apartmentId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update document",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Статус відповіді — 200 OK\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Content-Type — JSON\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\", \"application/json; charset=utf-8\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"Updated Apartment\",\r\n  \"summary\": \"Простора квартира у центрі Львова\",\r\n  \"bedrooms\": 3,\r\n  \"bathrooms\": 2,\r\n  \"price\": 250,\r\n  \"updatedBy\": \"Admin\",\r\n  \"updatedAt\": \"2025-05-22T12:00:00.000Z\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/listingsAndReviews/{{apartmentId}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"listingsAndReviews",
+						"{{apartmentId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get document by name",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Статус відповіді — 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Контент-тайп — JSON\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\", \"application/json; charset=utf-8\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/listingsAndReviews/search/query?name=Test Apartment",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"listingsAndReviews",
+						"search",
+						"query"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "Test Apartment"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete document",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Статус відповіді — 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Контент-тайп — JSON\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\", \"application/json; charset=utf-8\");\r",
+							"});\r",
+							"\r",
+							"const res = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Повідомлення про видалення є\", function () {\r",
+							"    pm.expect(res).to.have.property(\"message\", \"Документ видалено\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Об'єкт видаленого документа існує\", function () {\r",
+							"    pm.expect(res).to.have.property(\"deletedDocument\");\r",
+							"    pm.expect(res.deletedDocument).to.be.an(\"object\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/listingsAndReviews/{{apartmentId}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"listingsAndReviews",
+						"{{apartmentId}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "apartmentId",
+			"value": ""
+		}
+	]
+}

@@ -1,0 +1,237 @@
+{
+	"id": "d66bc87c-c950-4689-85ff-33c2525da50e",
+	"name": "Vladyslav Kasianchuk Atlas MongoDB Data API",
+	"timestamp": "2025-05-22T02:12:20.560Z",
+	"collection_id": "7519532-b531ffa0-3cbf-42e9-997c-37666e9e43ff",
+	"folder_id": 0,
+	"environment_id": "0",
+	"totalPass": 15,
+	"delay": 0,
+	"persist": true,
+	"status": "finished",
+	"startedAt": "2025-05-22T02:12:19.721Z",
+	"totalFail": 0,
+	"results": [
+		{
+			"id": "c9c02f63-8770-4797-9e4e-1bbf668f7884",
+			"name": "Create new Document",
+			"url": "http://localhost:3000/api/listingsAndReviews",
+			"time": 77,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {
+				"Статус-код має бути 201": true,
+				"Респонс повинен містити _id": true,
+				"Валідація JSON-схеми відповіді": true
+			},
+			"testPassFailCounts": {
+				"Статус-код має бути 201": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Респонс повинен містити _id": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Валідація JSON-схеми відповіді": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				77
+			],
+			"allTests": [
+				{
+					"Статус-код має бути 201": true,
+					"Респонс повинен містити _id": true,
+					"Валідація JSON-схеми відповіді": true
+				}
+			]
+		},
+		{
+			"id": "00237214-ae84-4093-9844-b82507568e59",
+			"name": "Get document by id",
+			"url": "http://localhost:3000/api/listingsAndReviews/682e880452c7f3754ecea729",
+			"time": 37,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Статус відповіді — 200 OK": true,
+				"Content-Type — JSON": true,
+				"Об'єкт має всі ключові поля": true,
+				"Типи даних правильні": true
+			},
+			"testPassFailCounts": {
+				"Статус відповіді — 200 OK": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type — JSON": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Об'єкт має всі ключові поля": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Типи даних правильні": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				37
+			],
+			"allTests": [
+				{
+					"Статус відповіді — 200 OK": true,
+					"Content-Type — JSON": true,
+					"Об'єкт має всі ключові поля": true,
+					"Типи даних правильні": true
+				}
+			]
+		},
+		{
+			"id": "5a6dd870-09cb-488d-85dd-1d1c330c5ac3",
+			"name": "Update document",
+			"url": "http://localhost:3000/api/listingsAndReviews/682e880452c7f3754ecea729",
+			"time": 67,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Статус відповіді — 200 OK": true,
+				"Content-Type — JSON": true
+			},
+			"testPassFailCounts": {
+				"Статус відповіді — 200 OK": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type — JSON": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				67
+			],
+			"allTests": [
+				{
+					"Статус відповіді — 200 OK": true,
+					"Content-Type — JSON": true
+				}
+			]
+		},
+		{
+			"id": "74dd3dbc-79f7-4a44-932e-7c85b40f054d",
+			"name": "Get document by name",
+			"url": "http://localhost:3000/api/listingsAndReviews/search/query?name=Test Apartment",
+			"time": 38,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Статус відповіді — 200": true,
+				"Контент-тайп — JSON": true
+			},
+			"testPassFailCounts": {
+				"Статус відповіді — 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Контент-тайп — JSON": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				38
+			],
+			"allTests": [
+				{
+					"Статус відповіді — 200": true,
+					"Контент-тайп — JSON": true
+				}
+			]
+		},
+		{
+			"id": "d2080a52-3a73-443c-a0e8-5724a07729b7",
+			"name": "Delete document",
+			"url": "http://localhost:3000/api/listingsAndReviews/682e880452c7f3754ecea729",
+			"time": 41,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Статус відповіді — 200": true,
+				"Контент-тайп — JSON": true,
+				"Повідомлення про видалення є": true,
+				"Об'єкт видаленого документа існує": true
+			},
+			"testPassFailCounts": {
+				"Статус відповіді — 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Контент-тайп — JSON": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Повідомлення про видалення є": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Об'єкт видаленого документа існує": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				41
+			],
+			"allTests": [
+				{
+					"Статус відповіді — 200": true,
+					"Контент-тайп — JSON": true,
+					"Повідомлення про видалення є": true,
+					"Об'єкт видаленого документа існує": true
+				}
+			]
+		}
+	],
+	"count": 1,
+	"totalTime": 260,
+	"collection": {
+		"requests": [
+			{
+				"id": "c9c02f63-8770-4797-9e4e-1bbf668f7884",
+				"method": "POST"
+			},
+			{
+				"id": "00237214-ae84-4093-9844-b82507568e59",
+				"method": "GET"
+			},
+			{
+				"id": "5a6dd870-09cb-488d-85dd-1d1c330c5ac3",
+				"method": "PUT"
+			},
+			{
+				"id": "74dd3dbc-79f7-4a44-932e-7c85b40f054d",
+				"method": "GET"
+			},
+			{
+				"id": "d2080a52-3a73-443c-a0e8-5724a07729b7",
+				"method": "DELETE"
+			}
+		]
+	}
+}
